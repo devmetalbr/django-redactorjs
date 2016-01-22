@@ -36,7 +36,7 @@ class BaseRedactorUploadView(FormMixin, ProcessFormView, View):
             upload_to or UPLOAD_PATH, GENERATE_FILENAME(file_.name))
         real_path = self.file_storage.save(path, file_)
         response_data = json.dumps(
-            {'filelink': self.file_storage.url(real_path)})
+            {'filelink': self.file_storage.url(real_path), 'filename': file_.name})
         return HttpResponse(response_data)
 
     def form_invalid(self, form):
