@@ -16,5 +16,5 @@ urlpatterns = [
         '^upload/file/(?P<upload_to>.*)',
         DefaultRedactorUploadView.as_view(),
         {'form_class': FileForm},
-        name='redactor_upload_file'))
-    ]
+        name='redactor_upload_file')
+]
