@@ -18,7 +18,8 @@ def default_generate_filename(filename):
 
 
 UPLOAD_PATH = getattr(settings, 'REDACTOR_UPLOAD', 'redactor/')
-GENERATE_FILENAME = getattr(settings, 'REDACTOR_GENERATE_FILENAME', default_generate_filename)
+GENERATE_FILENAME = getattr(
+    settings, 'REDACTOR_GENERATE_FILENAME', default_generate_filename)
 
 
 class BaseRedactorUploadView(FormMixin, ProcessFormView, View):
@@ -34,6 +35,8 @@ class BaseRedactorUploadView(FormMixin, ProcessFormView, View):
         upload_to = self.kwargs.get('upload_to')
         path = os.path.join(
             upload_to or UPLOAD_PATH, GENERATE_FILENAME(file_.name))
+        if form.cleaned_data.get('overwrite', None):
+            self.file_storage.delete(path)
         real_path = self.file_storage.save(path, file_)
         response_data = json.dumps(
             {'filelink': self.file_storage.url(real_path), 'url': self.file_storage.url(real_path), 'filename': file_.name})
